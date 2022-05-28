@@ -1,6 +1,7 @@
 from django.shortcuts import render,redirect
 from django.contrib import auth
-from django.contrib.auth.models import User
+
+from accounts.forms import UserForm
 
 def login(request):
     #POST 요청 -> 로그인 처리
@@ -23,7 +24,21 @@ def logout(request):
     return redirect('home')
 
 def signup(request):
-    return
+    #POST 요청
+    if request.method == 'POST':
+        form = UserForm(request.POST)
+        if form.is_valid():
+            form.save()
+            username = form.cleaned_data.get('username')
+            password = form.cleaned_data.get('password1')
+            user = auth.authenticate(username = username, password = password)
+            auth.login(request,user)
+            return redirect('home')
+        else:
+            return render(request, 'signup.html')
+    #GET 요청
+    else:
+        return render(request, 'signup.html')
 
 
 

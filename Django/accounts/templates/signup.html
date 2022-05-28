@@ -1,4 +1,9 @@
 {% extends 'home.html' %}
+{% block css %}
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'login.css' %}">
+    <title>Login</title>
+{% endblock %}
 
 {% block home %}
 <div class="center">
